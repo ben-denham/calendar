@@ -39,19 +39,60 @@ class Provider extends \OC\Search\Provider {
 	$results = array();
 	foreach ($calendars as $calendar) {
 	    $objects = OC_Calendar_Object::all($calendar['id']);
+	    $date = strtotime($query);
 	    // search all calendar objects, one by one
 	    foreach ($objects as $object) {
 		// skip non-events
 		if ($object['objecttype'] != 'VEVENT') {
 		    continue;
 		}
-		// add event result
+		// check the event summary string
 		if (stripos($object['summary'], $query) !== false) {
 		    $results[] = new \OCA\Calendar\Search\Event($object);
+		    continue;
+		}
+		// check if the event is happening on a queried date
+		$range = $this->getDateRange($object);
+		if ($date && $this->fallsWithin($date, $range)) {
+		    $results[] = new \OCA\Calendar\Search\Event($object);
+		    continue;
 		}
 	    }
 	}
 	return $results;
+    }
+
+    /**
+     * Test if a date falls within a range
+     * @param int $date in Unix time
+     * @param array $range [start, end] in Unix time
+     * @return boolean
+     */
+    private function fallsWithin($date, $range) {
+	if (!array($range) && !count($range) == 2) {
+	    return false;
+	}
+	// setup range
+	list($start, $end) = $range;
+	// test
+	return $date >= $start && $date <= $end;
+    }
+
+    /**
+     * Return the start time and end time of a calendar object in Unix time
+     * @param array $calendarObject must contain a VEVENT
+     * @return array [start, end] in Unix time
+     */
+    private function getDateRange($calendarObject) {
+	$calendarData = OC_VObject::parse($calendarObject['calendardata']);
+	// set start
+	$start = $calendarData->VEVENT->DTSTART->getDateTime();
+	$start->setTimezone($this->getUserTimezone());
+	// set end
+	$end = OC_Calendar_Object::getDTEndFromVEvent($calendarData->VEVENT)->getDateTime();
+	$end->setTimezone($this->getUserTimezone());
+	// return
+	return array($start->getTimestamp(), $end->getTimestamp());
     }
 
 }

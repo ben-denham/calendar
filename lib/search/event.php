@@ -72,19 +72,18 @@ class Event extends \OC\Search\Result {
 	$this->name = $data['summary'];
 	$this->link = OCP\Util::linkTo('calendar', 'index.php') . '?showevent=' . urlencode($data['id']);
 	// do calendar-specific setup
-	$user_timezone = OC_Calendar_App::getTimezone();
 	$l = new OC_l10n('calendar');
 	$calendar_data = OC_VObject::parse($data['calendardata']);
 	$vevent = $calendar_data->VEVENT;
 	// get start time
 	$dtstart = $vevent->DTSTART;
 	$start_dt = $dtstart->getDateTime();
-	$start_dt->setTimezone(new DateTimeZone($user_timezone));
+	$start_dt->setTimezone($this->getUserTimezone());
 	$this->start_time = $start_dt->format('r');
 	// get end time
 	$dtend = OC_Calendar_Object::getDTEndFromVEvent($vevent);
 	$end_dt = $dtend->getDateTime();
-	$end_dt->setTimezone(new DateTimeZone($user_timezone));
+	$end_dt->setTimezone($this->getUserTimezone());
 	$this->end_time = $end_dt->format('r');
 	// create text description
 	if ($dtstart->getDateType() == Sabre\VObject\Property\DateTime::DATE) {
@@ -103,4 +102,17 @@ class Event extends \OC\Search\Result {
 	$this->repeating = (bool) $data['repeating'];
     }
 
+    /**
+     * Cache the user timezone to avoid multiple requests (it looks like it
+     * uses a DB call in OC_Preferences to return this)
+     * @staticvar null $timezone
+     * @return DateTimeZone
+     */
+    public static function getUserTimezone() {
+	static $timezone = null;
+	if ($timezone === null) {
+	    $timezone = new DateTimeZone(OC_Calendar_App::getTimezone());
+	}
+	return $timezone;
+    }
 }
