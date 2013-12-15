@@ -27,8 +27,8 @@ class Provider extends \OC\Search\Provider {
 
     /**
      * Search for query in calendar events
-     * @param type $query
-     * @return \OCA\Calendar\Search\Event
+     * @param string $query
+     * @return array list of \OCA\Calendar\Search\Event
      */
     function search($query) {
 	$calendars = OC_Calendar_Calendar::allCalendars(OCP\USER::getUser(), true);
