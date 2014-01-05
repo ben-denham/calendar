@@ -192,14 +192,11 @@ class OC_Calendar_Object{
 			$sharedCalendar = OCP\Share::getItemSharedWithBySource('calendar', $calid); //calid, not objectid !!!! 1111 one one one eleven
 			$sharedAccessClassPermissions = OC_Calendar_Object::getAccessClassPermissions($oldvobject);
 			if (!$sharedCalendar || !($sharedCalendar['permissions'] & OCP\PERMISSION_UPDATE) || !($sharedAccessClassPermissions & OCP\PERMISSION_UPDATE)) {
-				$sharedEvent = OCP\Share::getItemSharedWithBySource('event', $id);
-				if (!$sharedEvent || !($sharedEvent['permissions'] & OCP\PERMISSION_UPDATE)) {
-					throw new Exception(
-						OC_Calendar_App::$l10n->t(
-							'You do not have the permissions to edit this event.'
-						)
-					);
-				}
+				throw new Exception(
+					OC_Calendar_App::$l10n->t(
+						'You do not have the permissions to edit this event.'
+					)
+				);
 			}
 		}
 		$object = OC_VObject::parse($data);
@@ -231,14 +228,11 @@ class OC_Calendar_Object{
 			$sharedCalendar = OCP\Share::getItemSharedWithBySource('calendar', $cid);
 			$sharedAccessClassPermissions = OC_Calendar_Object::getAccessClassPermissions($oldvobject);
 			if (!$sharedCalendar || !($sharedCalendar['permissions'] & OCP\PERMISSION_UPDATE) || !($sharedAccessClassPermissions & OCP\PERMISSION_UPDATE)) {
-				$sharedEvent = OCP\Share::getItemSharedWithBySource('event', $id);
-				if (!$sharedEvent || !($sharedEvent['permissions'] & OCP\PERMISSION_UPDATE)) {
-					throw new Exception(
-						OC_Calendar_App::$l10n->t(
-							'You do not have the permissions to edit this event.'
-						)
-					);
-				}
+				throw new Sabre_DAV_Exception_Forbidden(
+					OC_Calendar_App::$l10n->t(
+						'You do not have the permissions to edit this event.'
+					)
+				);
 			}
 		}
 		$object = OC_VObject::parse($data);
