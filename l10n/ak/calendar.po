@@ -3,20 +3,19 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Ahmad Saber <ahmad.24.8mile@hotmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-12-20 01:47-0500\n"
-"PO-Revision-Date: 2013-12-20 06:21+0000\n"
+"POT-Creation-Date: 2013-12-30 01:46-0500\n"
+"PO-Revision-Date: 2013-12-29 13:18+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
-"Language-Team: Kurdish (Iraq) (http://www.transifex.com/projects/p/owncloud/language/ku_IQ/)\n"
+"Language-Team: Akan (http://www.transifex.com/projects/p/owncloud/language/ak/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ku_IQ\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: ak\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 
 #: ajax/cache/status.php:19
 msgid "Not all calendars are completely cached"
@@ -66,62 +65,62 @@ msgstr ""
 
 #: ajax/settings/settimezone.php:23
 msgid "Timezone changed"
-msgstr "هەرێمی کاتی گۆڕدرا"
+msgstr ""
 
 #: ajax/settings/settimezone.php:25
 msgid "Invalid request"
-msgstr "داواکارى نادروستە"
+msgstr ""
 
 #: appinfo/app.php:38 js/l10n.php:87 templates/part.eventform.php:20
 #: templates/part.showevent.php:37
 msgid "Calendar"
-msgstr "ڕۆژژمێر"
+msgstr ""
 
-#: js/calendar.js:176
+#: js/calendar.js:179
 msgid "Deletion failed"
 msgstr ""
 
-#: js/calendar.js:263
+#: js/calendar.js:266
 msgid "ddd d MMMM[ yyyy]{ - [ddd d] MMMM yyyy}"
 msgstr ""
 
-#: js/calendar.js:265
+#: js/calendar.js:268
 msgid "ddd d MMMM[ yyyy] HH:mm{ - [ ddd d MMMM yyyy] HH:mm}"
 msgstr ""
 
-#: js/calendar.js:581
+#: js/calendar.js:584
 msgid "group"
 msgstr ""
 
-#: js/calendar.js:583 templates/part.share.php:46 templates/part.share.php:81
+#: js/calendar.js:586 templates/part.share.php:46 templates/part.share.php:81
 msgid "can edit"
 msgstr ""
 
-#: js/calendar.js:584 templates/part.share.php:50 templates/part.share.php:87
+#: js/calendar.js:587 templates/part.share.php:50 templates/part.share.php:87
 msgid "can share"
 msgstr ""
 
-#: js/calendar.js:855
+#: js/calendar.js:858
 msgid "ddd"
 msgstr ""
 
-#: js/calendar.js:856
+#: js/calendar.js:859
 msgid "ddd M/d"
 msgstr ""
 
-#: js/calendar.js:857
+#: js/calendar.js:860
 msgid "dddd M/d"
 msgstr ""
 
-#: js/calendar.js:860
+#: js/calendar.js:863
 msgid "MMMM yyyy"
 msgstr ""
 
-#: js/calendar.js:862
+#: js/calendar.js:865
 msgid "MMM d[ yyyy]{ '–'[ MMM] d yyyy}"
 msgstr ""
 
-#: js/calendar.js:864
+#: js/calendar.js:867
 msgid "dddd, MMM d, yyyy"
 msgstr ""
 
@@ -279,7 +278,7 @@ msgstr ""
 
 #: js/l10n.php:83
 msgid "All day"
-msgstr "هەموو ڕۆژ"
+msgstr ""
 
 #: js/l10n.php:84 lib/import.php:214 templates/settings.php:23
 msgid "New Calendar"
@@ -291,7 +290,7 @@ msgstr ""
 
 #: js/l10n.php:86 templates/part.showevent.php:11
 msgid "Title"
-msgstr "ناونیشان"
+msgstr ""
 
 #: js/l10n.php:88
 msgid "From Date"
@@ -319,7 +318,7 @@ msgstr ""
 
 #: lib/app.php:121
 msgid "Birthday"
-msgstr "ڕۆژی لە دایک بوون"
+msgstr ""
 
 #: lib/app.php:122
 msgid "Business"
@@ -383,7 +382,7 @@ msgstr ""
 
 #: lib/app.php:474
 msgid "unnamed"
-msgstr "بێ ناو"
+msgstr ""
 
 #: lib/calendar.php:178 lib/calendar.php:211
 msgid "You do not have the permissions to update this calendar."
@@ -531,19 +530,19 @@ msgstr ""
 
 #: templates/calendar.php:7
 msgid "Week"
-msgstr "هەفتە"
+msgstr ""
 
 #: templates/calendar.php:8
 msgid "Month"
-msgstr "مانگ"
+msgstr ""
 
 #: templates/calendar.php:12 templates/calendar.php:18
 msgid "Today"
-msgstr "ئەمڕۆ"
+msgstr ""
 
 #: templates/calendar.php:13
 msgid "Settings"
-msgstr "ده‌ستكاری"
+msgstr ""
 
 #: templates/part.choosecalendar.rowfields.php:13
 msgid "Share Calendar"
@@ -555,11 +554,11 @@ msgstr ""
 
 #: templates/part.choosecalendar.rowfields.php:27
 msgid "Download"
-msgstr "داگرتن"
+msgstr ""
 
 #: templates/part.choosecalendar.rowfields.php:31
 msgid "Edit"
-msgstr "دەسکاریکردن"
+msgstr ""
 
 #: templates/part.choosecalendar.rowfields.php:36
 msgid "Delete"
@@ -571,7 +570,7 @@ msgstr ""
 
 #: templates/part.editcalendar.php:9
 msgid "Edit calendar"
-msgstr "دەسکاریکردنی ڕۆژژمێر"
+msgstr ""
 
 #: templates/part.editcalendar.php:12
 msgid "Displayname"
@@ -579,15 +578,15 @@ msgstr ""
 
 #: templates/part.editcalendar.php:20
 msgid "Calendar color"
-msgstr "ڕەنگى ڕۆژژمێر"
+msgstr ""
 
 #: templates/part.editcalendar.php:33
 msgid "Save"
-msgstr "پاشکه‌وتکردن"
+msgstr ""
 
 #: templates/part.editcalendar.php:33
 msgid "Submit"
-msgstr "ناردن"
+msgstr ""
 
 #: templates/part.editcalendar.php:34
 msgid "Cancel"
@@ -623,7 +622,7 @@ msgstr ""
 
 #: templates/part.eventform.php:10
 msgid "Share"
-msgstr "هاوبەشی کردن"
+msgstr ""
 
 #: templates/part.eventform.php:15
 msgid "Title of the Event"
@@ -647,7 +646,7 @@ msgstr ""
 
 #: templates/part.eventform.php:51 templates/part.showevent.php:91
 msgid "Location"
-msgstr "شوێن"
+msgstr ""
 
 #: templates/part.eventform.php:56
 msgid "Categories (separate by comma)"
@@ -659,7 +658,7 @@ msgstr ""
 
 #: templates/part.eventform.php:61 templates/part.showevent.php:99
 msgid "Description"
-msgstr "پێناسه"
+msgstr ""
 
 #: templates/part.eventform.php:63
 msgid "Export event"
@@ -671,7 +670,7 @@ msgstr ""
 
 #: templates/part.eventform.php:77 templates/part.showevent.php:116
 msgid "Advanced"
-msgstr "هه‌ڵبژاردنی پیشكه‌وتوو"
+msgstr ""
 
 #: templates/part.eventform.php:121 templates/part.showevent.php:160
 msgid "Select weekdays"
@@ -750,7 +749,7 @@ msgstr ""
 
 #: templates/part.import.php:50
 msgid "Import"
-msgstr "هێنان"
+msgstr ""
 
 #: templates/part.import.php:59
 msgid "Close Dialog"
@@ -794,7 +793,7 @@ msgstr ""
 
 #: templates/part.showevent.php:19
 msgid "Category"
-msgstr " هاوپۆلەکان"
+msgstr ""
 
 #: templates/part.showevent.php:23
 msgid "No categories selected"
@@ -810,7 +809,7 @@ msgstr ""
 
 #: templates/part.showevent.php:70
 msgid "From"
-msgstr "لەلایەن"
+msgstr ""
 
 #: templates/part.showevent.php:73 templates/part.showevent.php:81
 msgid "at"
