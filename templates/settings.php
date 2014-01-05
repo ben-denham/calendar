@@ -104,6 +104,17 @@
 				<input id="cleancalendarcache" type="button" class="button" value="<?php p($l->t('Clear cache for repeating events'));?>">
 			</td>
 		</tr>
+		<?php if (OC_User::isAdminUser(OC_User::getUser())) { ?>
+		<tr class="advancedsettings">
+			<td>
+				<label for="" class="bold"><?php p($l->t('Calendar preferences'));?></label>
+				&nbsp;&nbsp;
+			</td>
+			<td>
+				<input id="cleancalendarpreferences" type="button" class="button" value="<?php p($l->t('Delete unused calendar preferences'));?>">
+			</td>
+		</tr>
+		<?php } ?>
 	</table>
 </div>
 <h2 id="title_urls"><?php p($l->t('URLs')); ?></h2>

@@ -47,6 +47,9 @@ $(document).ready(function(){
 			calendarcachecheck();
 		});
 	});
+	$('#cleancalendarpreferences').click(function(){
+		$.getJSON(OC.filePath('calendar', 'ajax/settings', 'cleanpreferences.php'));
+	});
 	calendarcachecheck();
 
 });
