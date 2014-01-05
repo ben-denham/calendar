@@ -35,30 +35,30 @@ class OC_Calendar_Hooks{
 			}
 		}
 
-        // Remove user's calendar preferences.
-        $stmt = OCP\DB::prepare( 'DELETE FROM `*PREFIX*clndr_calendar_user_preferences` WHERE `userid` = ?' );
+		// Remove user's calendar preferences.
+		$stmt = OCP\DB::prepare( 'DELETE FROM `*PREFIX*clndr_calendar_user_preferences` WHERE `userid` = ?' );
 		$stmt->execute(array($parameters['uid']));
 
 		return true;
 	}
 
-    /**
+	/**
 	 * @brief Create aditional data for a calendar share
 	 * @param paramters parameters from post_shared-Hook
 	 * @return array
 	 */
-    public static function createShare($parameters) {
-        if ($parameters['itemType'] == 'calendar') {
-            if ($parameters['shareType'] == OCP\Share::SHARE_TYPE_USER) {
-                OC_Calendar_Calendar::addCalendarUserPreferences($parameters['shareWith'], $parameters['itemSource']);
-            }
-            else if ($parameters['shareType'] == OCP\Share::SHARE_TYPE_GROUP) {
-                $users = \OC_Group::usersInGroup($parameters['shareWith']);
-                foreach ($users as $user) {
-                    OC_Calendar_Calendar::addCalendarUserPreferences($user, $parameters['itemSource']);
-                }
-            }
-        }
+	public static function createShare($parameters) {
+		if ($parameters['itemType'] == 'calendar') {
+			if ($parameters['shareType'] == OCP\Share::SHARE_TYPE_USER) {
+				OC_Calendar_Calendar::addCalendarUserPreferences($parameters['shareWith'], $parameters['itemSource']);
+			}
+			else if ($parameters['shareType'] == OCP\Share::SHARE_TYPE_GROUP) {
+				$users = \OC_Group::usersInGroup($parameters['shareWith']);
+				foreach ($users as $user) {
+					OC_Calendar_Calendar::addCalendarUserPreferences($user, $parameters['itemSource']);
+				}
+			}
+		}
 		return true;
 	}
 

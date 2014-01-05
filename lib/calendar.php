@@ -115,7 +115,7 @@ class OC_Calendar_Calendar{
 		$result = $stmt->execute(array($userid,$name,$uri,1,$order,$color,$timezone,$components));
 
 		$insertid = OCP\DB::insertid('*PREFIX*clndr_calendars');
-        self::addCalendarUserPreferences($userid, $insertid);
+		self::addCalendarUserPreferences($userid, $insertid);
 		OCP\Util::emitHook('OC_Calendar', 'addCalendar', $insertid);
 
 		return $insertid;
@@ -126,54 +126,54 @@ class OC_Calendar_Calendar{
 	 * @param string $userid
 	 * @return associative array of calendar ids and calendar names.
 	 */
-    public static function getCalendarDisplayNames($userid) {
-        $stmt = OCP\DB::prepare( 'SELECT `calendarid`, `displayname` FROM `*PREFIX*clndr_calendar_user_preferences` WHERE `userid`=?' );
-        $result = $stmt->execute(array($userid));
-        $calendar_names = array();
-        while ($row = $result->fetchRow()) {
-            $calendar_names[$row['calendarid']] = $row['displayname'];
-        }
-        return $calendar_names;
-    }
+	public static function getCalendarDisplayNames($userid) {
+		$stmt = OCP\DB::prepare( 'SELECT `calendarid`, `displayname` FROM `*PREFIX*clndr_calendar_user_preferences` WHERE `userid`=?' );
+ 		$result = $stmt->execute(array($userid));
+		$calendar_names = array();
+		while ($row = $result->fetchRow()) {
+			$calendar_names[$row['calendarid']] = $row['displayname'];
+		}
+		return $calendar_names;
+	}
 
-    /**
+	/**
 	 * @brief Returns a version of the given display name
-     * that is unique for this user's calendar display names.
+	 * that is unique for this user's calendar display names.
 	 * @param string $userid
 	 * @param string $display_name
 	 * @param string $calendar_userid
 	 * @return array of calendar names.
 	 */
-    public static function getUniqueDisplayName($userid, $display_name, $calendar_userid = false) {
-        if ($calendar_userid && $calendar_userid != $userid) {
-            $display_name = $display_name . ' (' . $calendar_userid . ')';
-        }
-        $existing_calendar_names = self::getCalendarDisplayNames($userid);
-        $suffix = 0;
-        $temp_name = $display_name;
-        while (in_array($temp_name, $existing_calendar_names)) {
-            $suffix++;
-            $temp_name = $display_name . ' - ' . $suffix;
-        }
-        return $temp_name;
-    }
+	public static function getUniqueDisplayName($userid, $display_name, $calendar_userid = false) {
+		if ($calendar_userid && $calendar_userid != $userid) {
+			$display_name = $display_name . ' (' . $calendar_userid . ')';
+		}
+		$existing_calendar_names = self::getCalendarDisplayNames($userid);
+		$suffix = 0;
+		$temp_name = $display_name;
+		while (in_array($temp_name, $existing_calendar_names)) {
+			$suffix++;
+			$temp_name = $display_name . ' - ' . $suffix;
+		}
+		return $temp_name;
+	}
 
-    public static function addCalendarUserPreferences($userid,$calendarid) {
-        // Check that the user doesn't already have preferences for this calendar.
-        $stmt = OCP\DB::prepare( 'SELECT 1 FROM `*PREFIX*clndr_calendar_user_preferences` WHERE `userid`=? AND `calendarid`=?' );
+	public static function addCalendarUserPreferences($userid,$calendarid) {
+		// Check that the user doesn't already have preferences for this calendar.
+		$stmt = OCP\DB::prepare( 'SELECT 1 FROM `*PREFIX*clndr_calendar_user_preferences` WHERE `userid`=? AND `calendarid`=?' );
 		$result = $stmt->execute(array($userid,$calendarid));
-        if (!$result->fetchRow()) {
-            $calendar = self::find($calendarid,$userid);
-            $displayname = self::getUniqueDisplayName($userid, $calendar['displayname'], $calendar['userid']);
-            OCP\DB::insertIfNotExist('*PREFIX*clndr_calendar_user_preferences', array(
-                'userid' => $userid,
-                'calendarid' => $calendarid,
-                'active' => 1,
-                'displayname' => $displayname,
-                'calendarcolor' => $calendar['calendarcolor']
-            ));
-        }
-    }
+		if (!$result->fetchRow()) {
+			$calendar = self::find($calendarid,$userid);
+			$displayname = self::getUniqueDisplayName($userid, $calendar['displayname'], $calendar['userid']);
+			OCP\DB::insertIfNotExist('*PREFIX*clndr_calendar_user_preferences', array(
+				'userid' => $userid,
+				'calendarid' => $calendarid,
+				'active' => 1,
+				'displayname' => $displayname,
+				'calendarcolor' => $calendar['calendarcolor']
+			));
+		}
+	}
 
 	/**
 	 * @brief Creates default calendars
@@ -208,7 +208,7 @@ class OC_Calendar_Calendar{
 		$result = $stmt->execute(array($userid,$name,$uri,1,$order,$color,$timezone,$components));
 
 		$insertid = OCP\DB::insertid('*PREFIX*clndr_calendars');
-        self::addCalendarUserPreferences($userid, $insertid);
+		self::addCalendarUserPreferences($userid, $insertid);
 		OCP\Util::emitHook('OC_Calendar', 'addCalendar', $insertid);
 
 		return $insertid;
@@ -227,8 +227,8 @@ class OC_Calendar_Calendar{
 	 * Values not null will be set
 	 */
 	public static function editCalendar($id,$name=null,$components=null,$timezone=null,$order=null,$color=null) {
-        // Update this user's calendar preferences.
-        self::editCalendarPreferences($id,$name,$color);
+		// Update this user's calendar preferences.
+		self::editCalendarPreferences($id,$name,$color);
 
 		// Need these ones for checking uri
 		$calendar = self::find($id);
@@ -250,16 +250,16 @@ class OC_Calendar_Calendar{
 		if(is_null($order)) $order = $calendar['calendarorder'];
 		if(is_null($color)) $color = $calendar['calendarcolor'];
 
-        if ($calendar['userid'] == OCP\User::getUser()) {
-            // This user is the owner of the calendar, so update global calendar settings and default values for calendar preferences.
-		$stmt = OCP\DB::prepare( 'UPDATE `*PREFIX*clndr_calendars` SET `displayname`=?,`calendarorder`=?,`calendarcolor`=?,`timezone`=?,`components`=?,`ctag`=`ctag`+1 WHERE `id`=?' );
-		$result = $stmt->execute(array($name,$order,$color,$timezone,$components,$id));
-        }
-        else {
-            // This user is not the owner of the calendar, so only update global calendar settings.
-            $stmt = OCP\DB::prepare( 'UPDATE `*PREFIX*clndr_calendars` SET `calendarorder`=?,`timezone`=?,`components`=?,`ctag`=`ctag`+1 WHERE `id`=?' );
-            $result = $stmt->execute(array($order,$timezone,$components,$id));
-        }
+		if ($calendar['userid'] == OCP\User::getUser()) {
+			// This user is the owner of the calendar, so update global calendar settings and default values for calendar preferences.
+			$stmt = OCP\DB::prepare( 'UPDATE `*PREFIX*clndr_calendars` SET `displayname`=?,`calendarorder`=?,`calendarcolor`=?,`timezone`=?,`components`=?,`ctag`=`ctag`+1 WHERE `id`=?' );
+			$result = $stmt->execute(array($name,$order,$color,$timezone,$components,$id));
+		}
+		else {
+			// This user is not the owner of the calendar, so only update global calendar settings.
+			$stmt = OCP\DB::prepare( 'UPDATE `*PREFIX*clndr_calendars` SET `calendarorder`=?,`timezone`=?,`components`=?,`ctag`=`ctag`+1 WHERE `id`=?' );
+			$result = $stmt->execute(array($order,$timezone,$components,$id));
+		}
 
 		OCP\Util::emitHook('OC_Calendar', 'editCalendar', $id);
 		return true;
@@ -292,11 +292,11 @@ class OC_Calendar_Calendar{
 		if(is_null($name)) $name = $calendar['displayname'];
 		if(is_null($color)) $color = $calendar['calendarcolor'];
 
-        // Update calendar preferences for this user.
-        $stmt = OCP\DB::prepare( 'UPDATE `*PREFIX*clndr_calendar_user_preferences` SET `displayname`=?,`calendarcolor`=? WHERE `calendarid`=? AND `userid`=?' );
-        $result = $stmt->execute(array($name,$color,$id,OCP\User::getUser()));
+		// Update calendar preferences for this user.
+		$stmt = OCP\DB::prepare( 'UPDATE `*PREFIX*clndr_calendar_user_preferences` SET `displayname`=?,`calendarcolor`=? WHERE `calendarid`=? AND `userid`=?' );
+		$result = $stmt->execute(array($name,$color,$id,OCP\User::getUser()));
 		return true;
-    }
+	}
 
 	/**
 	 * @brief Sets a calendar (in)active
@@ -316,8 +316,8 @@ class OC_Calendar_Calendar{
 				);
 			}
 		}
-        $stmt = OCP\DB::prepare( 'UPDATE `*PREFIX*clndr_calendar_user_preferences` SET `active` = ? WHERE `userid` = ? AND `calendarid` = ?' );
-        $stmt->execute(array((int)$active, OCP\User::getUser(), $id));
+		$stmt = OCP\DB::prepare( 'UPDATE `*PREFIX*clndr_calendar_user_preferences` SET `active` = ? WHERE `userid` = ? AND `calendarid` = ?' );
+		$stmt->execute(array((int)$active, OCP\User::getUser(), $id));
 
 		return true;
 	}
@@ -504,8 +504,8 @@ class OC_Calendar_Calendar{
 
 	 * This method removes calendar preferences where the calendar is not shared with the user and the user does not own the calendar.
 	 */
-    public static function cleanPreferences() {
-	$stmt = OCP\DB::prepare( 'DELETE FROM `*PREFIX*clndr_calendar_user_preferences` WHERE NOT ( EXISTS ( SELECT 1 FROM `*PREFIX*share` s WHERE s.`item_type`=? AND s.`item_source`=`*PREFIX*clndr_calendar_user_preferences`.`calendarid` AND s.`share_with`=`*PREFIX*clndr_calendar_user_preferences`.`userid` AND s.`share_type`=0 ) OR EXISTS ( SELECT 1 FROM `*PREFIX*share` s WHERE s.`item_type`=? AND s.`item_source`=`*PREFIX*clndr_calendar_user_preferences`.`calendarid` AND s.`share_with` IN (SELECT `gid` FROM `*PREFIX*group_user` WHERE `uid`=`*PREFIX*clndr_calendar_user_preferences`.`userid`) AND s.`share_type`=1 ) OR EXISTS ( SELECT 1 FROM `*PREFIX*clndr_calendars` c WHERE c.`userid`=`*PREFIX*clndr_calendar_user_preferences`.`userid` AND c.`id`=`*PREFIX*clndr_calendar_user_preferences`.`calendarid` ) )' );
-	$result = $stmt->execute(array('calendar', 'calendar'));
-    }
+	public static function cleanPreferences() {
+		$stmt = OCP\DB::prepare( 'DELETE FROM `*PREFIX*clndr_calendar_user_preferences` WHERE NOT ( EXISTS ( SELECT 1 FROM `*PREFIX*share` s WHERE s.`item_type`=? AND s.`item_source`=`*PREFIX*clndr_calendar_user_preferences`.`calendarid` AND s.`share_with`=`*PREFIX*clndr_calendar_user_preferences`.`userid` AND s.`share_type`=0 ) OR EXISTS ( SELECT 1 FROM `*PREFIX*share` s WHERE s.`item_type`=? AND s.`item_source`=`*PREFIX*clndr_calendar_user_preferences`.`calendarid` AND s.`share_with` IN (SELECT `gid` FROM `*PREFIX*group_user` WHERE `uid`=`*PREFIX*clndr_calendar_user_preferences`.`userid`) AND s.`share_type`=1 ) OR EXISTS ( SELECT 1 FROM `*PREFIX*clndr_calendars` c WHERE c.`userid`=`*PREFIX*clndr_calendar_user_preferences`.`userid` AND c.`id`=`*PREFIX*clndr_calendar_user_preferences`.`calendarid` ) )' );
+		$result = $stmt->execute(array('calendar', 'calendar'));
+	}
 }
