@@ -41,7 +41,7 @@ class OC_Calendar_Calendar{
 			$active_where = ' AND cup.`active` = ?';
 			$values[] = (int)$active;
 		}
-		$stmt = OCP\DB::prepare( 'SELECT c.`id`, c.`userid`, COALESCE(cup.`displayname`, c.`displayname`) AS displayname, c.`uri`, c.`ctag`, c.`calendarorder`, COALESCE(cup.`calendarcolor`, c.`calendarcolor`) AS calendarcolor, c.`timezone`, c.`components`, COALESCE(cup.`active`, 1) AS active, c.`displayname` AS default_displayname FROM `*PREFIX*clndr_calendars` c LEFT OUTER JOIN `*PREFIX*clndr_calendar_user_preferences` cup ON cup.`calendarid` = c.`id` AND cup.`userid` = c.`userid` WHERE c.`userid` = ?' . $active_where );
+		$stmt = OCP\DB::prepare( 'SELECT c.`id`, c.`userid`, COALESCE(cup.`displayname`, c.`displayname`) AS displayname, c.`uri`, c.`ctag`, c.`calendarorder`, COALESCE(cup.`calendarcolor`, c.`calendarcolor`) AS calendarcolor, c.`timezone`, c.`components`, COALESCE(cup.`active`, 1) AS active, c.`displayname` AS default_displayname FROM `*PREFIX*clndr_calendars` c LEFT OUTER JOIN `*PREFIX*clndr_user_preferences` cup ON cup.`calendarid` = c.`id` AND cup.`userid` = c.`userid` WHERE c.`userid` = ?' . $active_where );
 		$result = $stmt->execute($values);
 
 		$calendars = array();
@@ -76,7 +76,7 @@ class OC_Calendar_Calendar{
 		if ($uid == false) {
 			$uid = OCP\USER::getUser();
 		}
-		$stmt = OCP\DB::prepare( 'SELECT c.`id`, c.`userid`, COALESCE(cup.`displayname`, c.`displayname`) AS displayname, c.`uri`, c.`ctag`, c.`calendarorder`, COALESCE(cup.`calendarcolor`, c.`calendarcolor`) AS calendarcolor, c.`timezone`, c.`components`, COALESCE(cup.`active`, 1) AS active, c.`displayname` AS default_displayname FROM `*PREFIX*clndr_calendars` c LEFT OUTER JOIN `*PREFIX*clndr_calendar_user_preferences` cup ON cup.`calendarid` = c.`id` AND cup.`userid` = ? WHERE c.`id` = ?' );
+		$stmt = OCP\DB::prepare( 'SELECT c.`id`, c.`userid`, COALESCE(cup.`displayname`, c.`displayname`) AS displayname, c.`uri`, c.`ctag`, c.`calendarorder`, COALESCE(cup.`calendarcolor`, c.`calendarcolor`) AS calendarcolor, c.`timezone`, c.`components`, COALESCE(cup.`active`, 1) AS active, c.`displayname` AS default_displayname FROM `*PREFIX*clndr_calendars` c LEFT OUTER JOIN `*PREFIX*clndr_user_preferences` cup ON cup.`calendarid` = c.`id` AND cup.`userid` = ? WHERE c.`id` = ?' );
 		$result = $stmt->execute(array($uid,$id));
 
 		$row = $result->fetchRow();
@@ -127,7 +127,7 @@ class OC_Calendar_Calendar{
 	 * @return associative array of calendar ids and calendar names.
 	 */
 	public static function getCalendarDisplayNames($userid) {
-		$stmt = OCP\DB::prepare( 'SELECT `calendarid`, `displayname` FROM `*PREFIX*clndr_calendar_user_preferences` WHERE `userid`=?' );
+		$stmt = OCP\DB::prepare( 'SELECT `calendarid`, `displayname` FROM `*PREFIX*clndr_user_preferences` WHERE `userid`=?' );
  		$result = $stmt->execute(array($userid));
 		$calendar_names = array();
 		while ($row = $result->fetchRow()) {
@@ -160,12 +160,12 @@ class OC_Calendar_Calendar{
 
 	public static function addCalendarUserPreferences($userid,$calendarid) {
 		// Check that the user doesn't already have preferences for this calendar.
-		$stmt = OCP\DB::prepare( 'SELECT 1 FROM `*PREFIX*clndr_calendar_user_preferences` WHERE `userid`=? AND `calendarid`=?' );
+		$stmt = OCP\DB::prepare( 'SELECT 1 FROM `*PREFIX*clndr_user_preferences` WHERE `userid`=? AND `calendarid`=?' );
 		$result = $stmt->execute(array($userid,$calendarid));
 		if (!$result->fetchRow()) {
 			$calendar = self::find($calendarid,$userid);
 			$displayname = self::getUniqueDisplayName($userid, $calendar['displayname'], $calendar['userid']);
-			OCP\DB::insertIfNotExist('*PREFIX*clndr_calendar_user_preferences', array(
+			OCP\DB::insertIfNotExist('*PREFIX*clndr_user_preferences', array(
 				'userid' => $userid,
 				'calendarid' => $calendarid,
 				'active' => 1,
@@ -293,7 +293,7 @@ class OC_Calendar_Calendar{
 		if(is_null($color)) $color = $calendar['calendarcolor'];
 
 		// Update calendar preferences for this user.
-		$stmt = OCP\DB::prepare( 'UPDATE `*PREFIX*clndr_calendar_user_preferences` SET `displayname`=?,`calendarcolor`=? WHERE `calendarid`=? AND `userid`=?' );
+		$stmt = OCP\DB::prepare( 'UPDATE `*PREFIX*clndr_user_preferences` SET `displayname`=?,`calendarcolor`=? WHERE `calendarid`=? AND `userid`=?' );
 		$result = $stmt->execute(array($name,$color,$id,OCP\User::getUser()));
 		return true;
 	}
@@ -316,7 +316,7 @@ class OC_Calendar_Calendar{
 				);
 			}
 		}
-		$stmt = OCP\DB::prepare( 'UPDATE `*PREFIX*clndr_calendar_user_preferences` SET `active` = ? WHERE `userid` = ? AND `calendarid` = ?' );
+		$stmt = OCP\DB::prepare( 'UPDATE `*PREFIX*clndr_user_preferences` SET `active` = ? WHERE `userid` = ? AND `calendarid` = ?' );
 		$stmt->execute(array((int)$active, OCP\User::getUser(), $id));
 
 		return true;
@@ -357,7 +357,7 @@ class OC_Calendar_Calendar{
 		$stmt = OCP\DB::prepare( 'DELETE FROM `*PREFIX*clndr_objects` WHERE `calendarid` = ?' );
 		$stmt->execute(array($id));
 
-		$stmt = OCP\DB::prepare( 'DELETE FROM `*PREFIX*clndr_calendar_user_preferences` WHERE `calendarid` = ?' );
+		$stmt = OCP\DB::prepare( 'DELETE FROM `*PREFIX*clndr_user_preferences` WHERE `calendarid` = ?' );
 		$stmt->execute(array($id));
 
 		OCP\Share::unshareAll('calendar', $id);
@@ -505,7 +505,7 @@ class OC_Calendar_Calendar{
 	 * This method removes calendar preferences where the calendar is not shared with the user and the user does not own the calendar.
 	 */
 	public static function cleanPreferences() {
-		$stmt = OCP\DB::prepare( 'DELETE FROM `*PREFIX*clndr_calendar_user_preferences` WHERE NOT ( EXISTS ( SELECT 1 FROM `*PREFIX*share` s WHERE s.`item_type`=? AND s.`item_source`=`*PREFIX*clndr_calendar_user_preferences`.`calendarid` AND s.`share_with`=`*PREFIX*clndr_calendar_user_preferences`.`userid` AND s.`share_type`=0 ) OR EXISTS ( SELECT 1 FROM `*PREFIX*share` s WHERE s.`item_type`=? AND s.`item_source`=`*PREFIX*clndr_calendar_user_preferences`.`calendarid` AND s.`share_with` IN (SELECT `gid` FROM `*PREFIX*group_user` WHERE `uid`=`*PREFIX*clndr_calendar_user_preferences`.`userid`) AND s.`share_type`=1 ) OR EXISTS ( SELECT 1 FROM `*PREFIX*clndr_calendars` c WHERE c.`userid`=`*PREFIX*clndr_calendar_user_preferences`.`userid` AND c.`id`=`*PREFIX*clndr_calendar_user_preferences`.`calendarid` ) )' );
+		$stmt = OCP\DB::prepare( 'DELETE FROM `*PREFIX*clndr_user_preferences` WHERE NOT ( EXISTS ( SELECT 1 FROM `*PREFIX*share` s WHERE s.`item_type`=? AND s.`item_source`=`*PREFIX*clndr_user_preferences`.`calendarid` AND s.`share_with`=`*PREFIX*clndr_user_preferences`.`userid` AND s.`share_type`=0 ) OR EXISTS ( SELECT 1 FROM `*PREFIX*share` s WHERE s.`item_type`=? AND s.`item_source`=`*PREFIX*clndr_user_preferences`.`calendarid` AND s.`share_with` IN (SELECT `gid` FROM `*PREFIX*group_user` WHERE `uid`=`*PREFIX*clndr_user_preferences`.`userid`) AND s.`share_type`=1 ) OR EXISTS ( SELECT 1 FROM `*PREFIX*clndr_calendars` c WHERE c.`userid`=`*PREFIX*clndr_user_preferences`.`userid` AND c.`id`=`*PREFIX*clndr_user_preferences`.`calendarid` ) )' );
 		$result = $stmt->execute(array('calendar', 'calendar'));
 	}
 }

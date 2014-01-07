@@ -36,7 +36,7 @@ class OC_Calendar_Hooks{
 		}
 
 		// Remove user's calendar preferences.
-		$stmt = OCP\DB::prepare( 'DELETE FROM `*PREFIX*clndr_calendar_user_preferences` WHERE `userid` = ?' );
+		$stmt = OCP\DB::prepare( 'DELETE FROM `*PREFIX*clndr_user_preferences` WHERE `userid` = ?' );
 		$stmt->execute(array($parameters['uid']));
 
 		return true;

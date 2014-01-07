@@ -284,7 +284,7 @@
  
  <table>
 
-  <name>*dbprefix*clndr_calendar_user_preferences</name>
+  <name>*dbprefix*clndr_user_preferences</name>
 
   <declaration>
 
