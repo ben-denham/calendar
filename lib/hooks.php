@@ -50,12 +50,12 @@ class OC_Calendar_Hooks{
 	public static function createShare($parameters) {
 		if ($parameters['itemType'] == 'calendar') {
 			if ($parameters['shareType'] == OCP\Share::SHARE_TYPE_USER) {
-				OC_Calendar_Calendar::addCalendarUserPreferences($parameters['shareWith'], $parameters['itemSource']);
+				OC_Calendar_Calendar::addCalendarDefaultUserPreferences($parameters['shareWith'], $parameters['itemSource']);
 			}
 			else if ($parameters['shareType'] == OCP\Share::SHARE_TYPE_GROUP) {
 				$users = \OC_Group::usersInGroup($parameters['shareWith']);
 				foreach ($users as $user) {
-					OC_Calendar_Calendar::addCalendarUserPreferences($user, $parameters['itemSource']);
+					OC_Calendar_Calendar::addCalendarDefaultUserPreferences($user, $parameters['itemSource']);
 				}
 			}
 		}
@@ -74,7 +74,7 @@ class OC_Calendar_Hooks{
 		$result = $stmt->execute(array('calendar', OCP\Share::SHARE_TYPE_GROUP, $parameters['gid']));
 		while ($calendar = $result->fetchRow()) {
 			// Add default user preferences for each calendar.
-			OC_Calendar_Calendar::addCalendarUserPreferences($parameters['uid'], $calendar['item_source']);
+			OC_Calendar_Calendar::addCalendarDefaultUserPreferences($parameters['uid'], $calendar['item_source']);
 		}
 		return true;
 	}
