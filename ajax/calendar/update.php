@@ -27,8 +27,14 @@ foreach($calendar_names as $calid => $calname) {
 
 $calendarid = $_POST['id'];
 
+$calendar = OC_Calendar_Calendar::find($calendarid);
 try {
-	OC_Calendar_Calendar::editCalendarPreferences($calendarid, strip_tags($_POST['name']), $_POST['color']);
+    if ($calendar['userid'] == OCP\User::getUser()) {
+        OC_Calendar_Calendar::editCalendar($calendarid, strip_tags($_POST['name']), null, null, null, $_POST['color']);
+    }
+    else {
+        OC_Calendar_Calendar::editCalendarPreferences($calendarid, strip_tags($_POST['name']), $_POST['color']);
+    }
 } catch(Exception $e) {
 	OCP\JSON::error(array('message'=>$e->getMessage()));
 	exit;
