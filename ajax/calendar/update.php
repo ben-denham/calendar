@@ -29,12 +29,14 @@ $calendarid = $_POST['id'];
 
 $calendar = OC_Calendar_Calendar::find($calendarid);
 try {
-    if ($calendar['userid'] == OCP\User::getUser()) {
-        OC_Calendar_Calendar::editCalendar($calendarid, strip_tags($_POST['name']), null, null, null, $_POST['color']);
-    }
-    else {
-        OC_Calendar_Calendar::editCalendarPreferences($calendarid, strip_tags($_POST['name']), $_POST['color']);
-    }
+	if ($calendar['userid'] == OCP\User::getUser()) {
+		// If the user owns the calendar, do a full edit so that default values are updated.
+		OC_Calendar_Calendar::editCalendar($calendarid, strip_tags($_POST['name']), null, null, null, $_POST['color']);
+	}
+	else {
+		// If the user does not own the calendar, only update the preferences.
+		OC_Calendar_Calendar::editCalendarPreferences($calendarid, strip_tags($_POST['name']), $_POST['color']);
+	}
 } catch(Exception $e) {
 	OCP\JSON::error(array('message'=>$e->getMessage()));
 	exit;
